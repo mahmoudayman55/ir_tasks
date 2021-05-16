@@ -1,4 +1,4 @@
-﻿/*
+/*
 name : mahmoud ayman mohamed el-ghalban
 level : 2
 bioinformatics
@@ -167,19 +167,21 @@ namespace Task1
 
 
                 int Word1Binary = Convert.ToInt32(BinaryWords.ElementAt(0), 2);
-                int Word2Binary = Convert.ToInt32(BinaryWords.ElementAt(1), 2);
+             
 
+                int Word2Binary = Convert.ToInt32(BinaryWords.ElementAt(1), 2);
+               
                 string Result = "";
                 switch (_operator)
                 {
                     case "and":
-                        Result = Convert.ToString((Word1Binary & Word2Binary), 2);
+                        Result = Convert.ToString((Word1Binary & Word2Binary), 2).PadLeft(NumberOfDocs,'0');
                         break;
                     case "or":
-                        Result = Convert.ToString((Word1Binary | Word2Binary), 2);
+                        Result = Convert.ToString((Word1Binary | Word2Binary), 2).PadLeft(NumberOfDocs, '0');
                         break;
                     case "not":
-                        Result = Convert.ToString((Word1Binary & ~Word2Binary), 2);
+                        Result = Convert.ToString((Word1Binary & ~Word2Binary), 2).PadLeft(NumberOfDocs, '0');
                         break;
 
 
@@ -194,7 +196,7 @@ namespace Task1
                     {
                         Console.WriteLine(table[0, i]);
                     }
-                    else break;
+                    
                 }
 
 
