@@ -234,6 +234,9 @@ class _homeState extends State {
               break;
           }
         }
+        if (SearchResults.length<=1){
+          _showAlertDialog("Alert !", "No document matches your query");
+        }
       }
     });
   }
