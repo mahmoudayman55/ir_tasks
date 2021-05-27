@@ -40,17 +40,7 @@ class _homeState extends State {
   PorterStemmer stemmer = PorterStemmer();
   List<String> operators = ["and", "or", "not"];
 
-/*void readFile (File file,List<String>Terms){
-  List file1=file.readAsStringSync().split(' ');
-  file1.forEach((term) { Terms.add(term);});
 
-}*/
-
-/*void read_and_add_to_map (File file, var map,int i){
-  List Terms_of_file=file.readAsStringSync().split(' ');
-  for(String term in Terms_of_file){map[term]=(i).toString();}
-
-  }*/
   void clear() {
     setState(() {
       _query.text="";
@@ -209,7 +199,6 @@ class _homeState extends State {
       ];
       List<String> splittedQuery = _query.text.split(" ");
       print(splittedQuery[1]);
-      //||(stemmer.stem(splittedQuery[1])!="or")||(stemmer.stem(splittedQuery[1])!="not")
       if ((!operators.contains(stemmer.stem(splittedQuery[1])))||splittedQuery.length>3) {
         _showAlertDialog("Enter valid query!", "You can only enter a two-word query and one operator");
       } else {
