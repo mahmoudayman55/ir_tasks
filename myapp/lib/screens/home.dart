@@ -40,13 +40,23 @@ class _homeState extends State {
   PorterStemmer stemmer = PorterStemmer();
   List<String> operators = ["and", "or", "not"];
 
+/*void readFile (File file,List<String>Terms){
+  List file1=file.readAsStringSync().split(' ');
+  file1.forEach((term) { Terms.add(term);});
 
+}*/
+
+/*void read_and_add_to_map (File file, var map,int i){
+  List Terms_of_file=file.readAsStringSync().split(' ');
+  for(String term in Terms_of_file){map[term]=(i).toString();}
+
+  }*/
   void clear() {
     setState(() {
       _query.text="";
       SearchResults = [
         Text(
-          "",
+          "Documents matching your search :",
           style: new TextStyle(color: Colors.blueAccent),
         )
       ];
@@ -67,7 +77,7 @@ class _homeState extends State {
     setState(() {
       SearchResults = [
         Text(
-          "",
+          "Documents matching your search :",
           style: new TextStyle(color: Colors.blueAccent),
         )
       ];
@@ -198,40 +208,42 @@ class _homeState extends State {
         )
       ];
       List<String> splittedQuery = _query.text.split(" ");
+      print(splittedQuery[1]);
+      //||(stemmer.stem(splittedQuery[1])!="or")||(stemmer.stem(splittedQuery[1])!="not")
       if ((!operators.contains(stemmer.stem(splittedQuery[1])))||splittedQuery.length>3) {
         _showAlertDialog("Enter valid query!", "You can only enter a two-word query and one operator");
       } else {
-        String word1 = splittedQuery[0].toString();
+        String word1 = stemmer.stem(splittedQuery[0].toString());
         String operator = stemmer.stem(splittedQuery[1].toString());
-        String word2 = splittedQuery[2].toString();
+        String word2 = stemmer.stem(splittedQuery[2].toString());
         for (int i = 0; i < TextFiles.length; i++) {
           List<String> terms_of_file =
               TextFiles[i].readAsStringSync().split(" ");
+          List<String> stemmedTerms = [];
 
+          for (String term in terms_of_file) {
+            stemmedTerms.add(stemmer.stem(term));
+          }
           switch (operator) {
             case "and":
-              if (terms_of_file.contains(word1) &&
-                  terms_of_file.contains(word2)) {
+              if (stemmedTerms.contains(word1) &&
+                  stemmedTerms.contains(word2)) {
                 SearchResults.add(Text("DOC ${i + 1} , "));
               }
               break;
             case "or":
-              if (terms_of_file.contains(word1) ||
-                  terms_of_file.contains(word2)) {
+              if (stemmedTerms.contains(word1) ||
+                  stemmedTerms.contains(word2)) {
                 SearchResults.add(Text("DOC ${i + 1} , "));
               }
               break;
             case "not":
-              if (terms_of_file.contains(word1) &
-                  !terms_of_file.contains(word2)) {
+              if (stemmedTerms.contains(word1) &
+                  !stemmedTerms.contains(word2)) {
                 SearchResults.add(Text("DOC ${i + 1} , "));
               }
               break;
           }
-
-        }
-        if (SearchResults.length<=1){
-          _showAlertDialog("Alert !", "No document matches your query");
         }
       }
     });
